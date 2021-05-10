@@ -17,9 +17,9 @@ public class Recipe {
 
     }
 
-    public int search(String name ) {
-        for(int i=0;i<ingredients.size();i++){
-            if(ingredients.get(i).getName().equalsIgnoreCase(name))
+    public int search(String name,List<Ingredient> list ) {
+        for(int i=0;i<list.size();i++){
+            if(list.get(i).getName().equalsIgnoreCase(name))
                 return i;
 
         }
@@ -40,7 +40,7 @@ public class Recipe {
     public void isEnough(List<Ingredient> list){
         int index;
         for(int i=0;i<list.size();i++){
-            if((index = search(list.get(i).getName()))!=-1){
+            if((index = search(list.get(i).getName(),ingredients))!=-1){
                 if(list.get(i).getWeight()>ingredients.get(index).getWeight())
                     addExtraMaterials(list.get(i).getName());
             }
@@ -52,7 +52,7 @@ public class Recipe {
     }
 
     public boolean isEnough(Ingredient ingredient){
-        int index=search(ingredient.getName());
+        int index=search(ingredient.getName(),ingredients);
 
         if(index!=-1){
             if(ingredient.getWeight()>ingredients.get(index).getWeight())
@@ -70,7 +70,7 @@ public class Recipe {
 
     public void addExtraMaterials(String ingredientName){
         Scanner scanner = new Scanner(System.in);
-        int index = search(ingredientName);
+        int index = search(ingredientName,ingredients);
         if(index >= 0){
             System.out.println("Add more "+ingredients.get(index).getName());
             System.out.println("Enter added weight for "+ingredientName);
@@ -104,11 +104,11 @@ public class Recipe {
     public void useIngredients(List<Ingredient> list){
         int index;
         for(int i=0;i<list.size();i++){
-
-
+            index = search(list.get(i).getName(),ingredients);
+            System.out.println(list.get(i).getName()+" used "+list.get(i).getWeight()+" unit");
+            ingredients.get(index).setWeight(ingredients.get(index).getWeight()-list.get(i).getWeight());
 
         }
-
 
     }
 
@@ -117,24 +117,55 @@ public class Recipe {
         List<Ingredient> pieList = new ArrayList<>();
         loadMaterials(path,pieList);
 
+        int index = search("apple",pieList);
+        pieList.get(index).wash();
+        pieList.get(index).hull();
+        useIngredients(pieList);
+        calculateCalorie(pieList);
 
 
 
+    }
 
+    public void calculateCalorie(List<Ingredient> list){
+        double total=0;
+        for(int i=0;i<list.size();i++)
+            total+= list.get(i).getCalorie()*list.get(i).getWeight();
 
-
+        System.out.println("Total Calorie :"+total);
     }
 
 
 
 
 
-
-    @Override
-    public String toString(){
-        String all="";
+    public void printInventory(){
+        String all="Ingredients :\n-------------\n";
         for(Ingredient i:ingredients)
             all+= i.toString();
-        return all;
+        System.out.println(all);;
+    }
+    public void menu() throws IOException {
+        Scanner input = new Scanner(System.in);
+        int selection;
+        while(true) {
+            System.out.println("1. Print Inventory\n2. Make apple pie\n3.Exit");
+            selection = input.nextInt();
+            switch (selection) {
+                case 1:
+                    printInventory();
+                    break;
+                case 2:
+                    makePie();
+                    break;
+                case 3:
+                    System.out.println("Good bye!");
+                    return;
+                default:
+                    System.out.println("Wrong Input, enter again!!");
+                    break;
+
+            }
+        }
     }
 }

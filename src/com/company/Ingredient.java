@@ -19,7 +19,6 @@ public class Ingredient {
         this.isPlant = isPlant;
         this.isWashed = false;
         this.isHulled = false;
-        this.isJuicy = false;
     }
 
     public String getName() {
@@ -62,13 +61,6 @@ public class Ingredient {
         isHulled = hulled;
     }
 
-    public boolean isJuicy() {
-        return isJuicy;
-    }
-
-    public void setJuicy(boolean juicy) {
-        isJuicy = juicy;
-    }
 
     public boolean isPlant() {
         return isPlant;
@@ -80,10 +72,8 @@ public class Ingredient {
 
     public void wash(){
         if(isPlant){
-            if(isJuicy)
-                System.out.println(getName()+" Juice cannot wash");
-            else
-                isWashed=true;
+            System.out.println(name+ " is washed");
+            isWashed=true;
         }
 
         else
@@ -92,40 +82,25 @@ public class Ingredient {
     }
     public void hull(){
         if(isPlant){
-            if(isJuicy)
-                System.out.println(getName()+" Juice cannot hull");
-            else
-                isHulled=true;
+            System.out.println(name+" is Hulled");
+            isHulled=true;
         }
 
         else
             System.out.println("Given ingredient is not plant");
     }
 
-    public void makeJuicy(){
-        if(isPlant){
-            if(isJuicy)
-                System.out.println(getName()+" is a juicy already");
-            else
-                isJuicy=true;
-        }
 
-        else
-            System.out.println("Given ingredient is not plant");
-
-    }
 
 
     @Override
     public String toString() {
-        return "Ingredient{" +
-                "name='" + name + '\'' +
-                ", calorie=" + calorie +
-                ", weight=" + weight +
-                ", isPlant=" + isPlant +
-                ", isWashed=" + isWashed +
-                ", isHulled=" + isHulled +
-                ", isJuicy=" + isJuicy +
-                "}\n";
+        return  "name=" + name +
+                "\ncalorie=" + calorie +
+                "\nweight=" + weight +
+                "\nisPlant=" + isPlant +
+                "\nisWashed=" + isWashed +
+                "\nisHulled=" + isHulled +
+                "\n-------------------------------------------\n";
     }
 }
