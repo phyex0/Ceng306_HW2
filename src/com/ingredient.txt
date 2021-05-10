@@ -1,0 +1,7 @@
+sugar,100,100,false
+lemon Juice,28.9,10,false
+baked shell,90,50,false
+corn strach,381,100,false
+water,0,40,false
+vanilla,288,20,false
+

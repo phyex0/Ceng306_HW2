@@ -20,19 +20,35 @@ public class Recipe {
         for(int i=0;i<ingredients.size();i++){
             if(ingredients.get(i).getName().equalsIgnoreCase(name))
                 return i;
+
         }
         return -1;
     }
 
-    public void loadMaterials() throws IOException {
-        List<String> input = FileIO.readFile(ingredientPath);
+    public void loadMaterials(String path, List<Ingredient> list) throws IOException {
+        List<String> input = FileIO.readFile(path);
         for(String parameters :input){
             String param[] = parameters.split(",");
-                ingredients.add(new Ingredient(param[0],Double.parseDouble(param[1]),Double.parseDouble(param[2]),Boolean.parseBoolean(param[3])));
+                list.add(new Ingredient(param[0],Double.parseDouble(param[1]),Double.parseDouble(param[2]),Boolean.parseBoolean(param[3])));
         }
 
 
     }
+
+    public void isEnough(List<Ingredient> list){
+        int index;
+        for(int i=0;i<list.size();i++){
+            if((index = search(list.get(i).getName()))!=-1){
+                if(list.get(i).getWeight()>ingredients.get(index).getWeight())
+                    addExtraMaterials(list.get(i).getName());
+            }
+            else
+                addExtraMaterials(list.get(i).getName());
+
+        }
+    }
+
+
 
     public void addExtraMaterials(String ingredientName){
         Scanner scanner = new Scanner(System.in);
@@ -67,13 +83,13 @@ public class Recipe {
 
     }
 
-    public void makePie(String plantName){
-        double sugar = 0.75;
-        double lemonJuice = 2;
-        int bakedTartshell = 6;
-        double cornstarch = 0.5;
-        double water = 1.0;
-        double vanilla = 0.5;
+    public void makePie(String plantName) throws IOException {
+        final String path = "src/com/pie.txt";
+        List<Ingredient> pieList = new ArrayList<>();
+        loadMaterials(path,pieList);
+        isEnough(pieList);
+
+
 
 
     }
