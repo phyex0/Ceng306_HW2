@@ -21,7 +21,6 @@ public class Recipe {
         for(int i=0;i<list.size();i++){
             if(list.get(i).getName().equalsIgnoreCase(name))
                 return i;
-
         }
         return -1;
     }
@@ -37,39 +36,19 @@ public class Recipe {
 
     }
 
+    //check items if it's less than we need add. If it's still less adds again.
     public void isEnough(List<Ingredient> list){
         System.out.println("Checking for materials...");
         int index;
-        for(int i=0;i<list.size();i++){
-            if((index = search(list.get(i).getName(),ingredients))!=-1){
-                if(list.get(i).getWeight()>ingredients.get(index).getWeight()){
-                    addExtraMaterials(list.get(i).getName());
+        for(Ingredient i: list){
+            if((index = search(i.getName(),ingredients))==-1 || i.getWeight()>ingredients.get(index).getWeight()){
+                    addExtraMaterials(i.getName());
                     isEnough(list);
-                }
-            }
-            else {
-                addExtraMaterials(list.get(i).getName());
-                isEnough(list);
             }
         }
 
     }
 
-    public boolean isEnough(Ingredient ingredient){
-        int index=search(ingredient.getName(),ingredients);
-
-        if(index!=-1){
-            if(ingredient.getWeight()>ingredients.get(index).getWeight())
-                return false;
-        }
-
-        else if(index==-1)
-           return false;
-
-        return true;
-
-
-    }
 
 
     public void addExtraMaterials(String ingredientName){
@@ -91,6 +70,7 @@ public class Recipe {
             System.out.println("Enter weight");
             newIngredient.setWeight(scanner.nextDouble());
             System.out.println("This is a plant? Or sub material (Yes/No)");
+            scanner.nextLine();
             String result= scanner.nextLine();
 
             if (result.equalsIgnoreCase("Yes"))
@@ -107,10 +87,10 @@ public class Recipe {
     }
     public void useIngredients(List<Ingredient> list){
         int index;
-        for(int i=0;i<list.size();i++){
-            index = search(list.get(i).getName(),ingredients);
-            System.out.println(list.get(i).getName()+" used "+list.get(i).getWeight()+" unit");
-            ingredients.get(index).setWeight(ingredients.get(index).getWeight()-list.get(i).getWeight());
+        for(Ingredient i :list){
+            index = search(i.getName(),ingredients);
+            System.out.println(i.getName()+" used "+i.getWeight()+" unit");
+            ingredients.get(index).setWeight(ingredients.get(index).getWeight()-i.getWeight());
 
         }
 
@@ -134,13 +114,10 @@ public class Recipe {
 
     public void calculateCalorie(List<Ingredient> list){
         double total=0;
-        for(int i=0;i<list.size();i++)
-            total+= list.get(i).getCalorie()*list.get(i).getWeight();
+        for(Ingredient i: list)
+            total+= i.getCalorie()*i.getWeight();
         System.out.println("Total Calorie :"+total);
     }
-
-
-
 
 
     public void printInventory(){
@@ -149,6 +126,7 @@ public class Recipe {
             all+= i.toString();
         System.out.println(all);;
     }
+
 
     public void menu() throws IOException {
         Scanner input = new Scanner(System.in);
