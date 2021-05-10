@@ -126,6 +126,6 @@ public class Ingredient {
                 ", isWashed=" + isWashed +
                 ", isHulled=" + isHulled +
                 ", isJuicy=" + isJuicy +
-                '}';
+                "}\n";
     }
 }

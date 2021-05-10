@@ -13,6 +13,7 @@ public class Recipe {
 
     public Recipe() throws IOException {
         this.ingredients = new ArrayList<>();
+        loadMaterials(ingredientPath,ingredients);
 
     }
 
@@ -29,6 +30,7 @@ public class Recipe {
         List<String> input = FileIO.readFile(path);
         for(String parameters :input){
             String param[] = parameters.split(",");
+            if(param.length == 4)
                 list.add(new Ingredient(param[0],Double.parseDouble(param[1]),Double.parseDouble(param[2]),Boolean.parseBoolean(param[3])));
         }
 
@@ -46,8 +48,24 @@ public class Recipe {
                 addExtraMaterials(list.get(i).getName());
 
         }
+
     }
 
+    public boolean isEnough(Ingredient ingredient){
+        int index=search(ingredient.getName());
+
+        if(index!=-1){
+            if(ingredient.getWeight()>ingredients.get(index).getWeight())
+                return false;
+        }
+
+        else if(index==-1)
+           return false;
+
+        return true;
+
+
+    }
 
 
     public void addExtraMaterials(String ingredientName){
@@ -55,14 +73,15 @@ public class Recipe {
         int index = search(ingredientName);
         if(index >= 0){
             System.out.println("Add more "+ingredients.get(index).getName());
+            System.out.println("Enter added weight for "+ingredientName);
             double newWeight= scanner.nextDouble();
             ingredients.get(index).setWeight(ingredients.get(index).getWeight()+newWeight);
         }
 
         else{
             Ingredient newIngredient = new Ingredient();
-            System.out.println("Enter the material name");
-            newIngredient.setName(scanner.nextLine());
+            System.out.println("Enter required infos for "+ingredientName);
+            newIngredient.setName(ingredientName);
             System.out.println("Enter calorie of food");
             newIngredient.setCalorie(scanner.nextDouble());
             System.out.println("Enter weight");
@@ -82,12 +101,24 @@ public class Recipe {
 
 
     }
+    public void useIngredients(List<Ingredient> list){
+        int index;
+        for(int i=0;i<list.size();i++){
 
-    public void makePie(String plantName) throws IOException {
+
+
+        }
+
+
+    }
+
+    public void makePie() throws IOException {
         final String path = "src/com/pie.txt";
         List<Ingredient> pieList = new ArrayList<>();
         loadMaterials(path,pieList);
-        isEnough(pieList);
+
+
+
 
 
 
@@ -95,8 +126,15 @@ public class Recipe {
     }
 
 
-    public void makeMenemen(){}
 
-    public void menu(){}
 
+
+
+    @Override
+    public String toString(){
+        String all="";
+        for(Ingredient i:ingredients)
+            all+= i.toString();
+        return all;
+    }
 }

@@ -4,3 +4,4 @@ baked shell,90,6,false
 corn strach,381,0.5,false
 water,0,1,false
 vanilla,288,0.5,false
+apple,70,0.5,true
