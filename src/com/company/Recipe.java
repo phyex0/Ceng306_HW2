@@ -38,15 +38,19 @@ public class Recipe {
     }
 
     public void isEnough(List<Ingredient> list){
+        System.out.println("Checking for materials...");
         int index;
         for(int i=0;i<list.size();i++){
             if((index = search(list.get(i).getName(),ingredients))!=-1){
-                if(list.get(i).getWeight()>ingredients.get(index).getWeight())
+                if(list.get(i).getWeight()>ingredients.get(index).getWeight()){
                     addExtraMaterials(list.get(i).getName());
+                    isEnough(list);
+                }
             }
-            else
+            else {
                 addExtraMaterials(list.get(i).getName());
-
+                isEnough(list);
+            }
         }
 
     }
@@ -116,6 +120,7 @@ public class Recipe {
         final String path = "src/com/pie.txt";
         List<Ingredient> pieList = new ArrayList<>();
         loadMaterials(path,pieList);
+        isEnough(pieList);
 
         int index = search("apple",pieList);
         pieList.get(index).wash();
@@ -131,7 +136,6 @@ public class Recipe {
         double total=0;
         for(int i=0;i<list.size();i++)
             total+= list.get(i).getCalorie()*list.get(i).getWeight();
-
         System.out.println("Total Calorie :"+total);
     }
 
@@ -145,6 +149,7 @@ public class Recipe {
             all+= i.toString();
         System.out.println(all);;
     }
+
     public void menu() throws IOException {
         Scanner input = new Scanner(System.in);
         int selection;
